@@ -32,6 +32,7 @@ requires
   rtl;
 
 contains
-  Sprinkles in '..\..\Source\Base\Sprinkles.pas';
+  Sprinkles in '..\..\Source\Base\Sprinkles.pas',
+  Sprinkles.IO in '..\..\Source\Base\Sprinkles.IO.pas';
 
 end.
