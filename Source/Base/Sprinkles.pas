@@ -4,9 +4,6 @@ unit Sprinkles;
 
 interface
 
-uses
-  System.SysUtils;   // TStringHelper, ...
-
 type
   TGUIDFormat = (
     N,   // 32 digits: 00000000000000000000000000000000
@@ -59,28 +56,34 @@ type
 implementation
 
 uses
+  System.SysUtils,
   System.RegularExpressions;
 
 resourcestring
-  MsgInvalidGUID = '"%s" is not a valid GUID value';
+  SInvalidGUID = '"%s" is not a valid GUID value';
+
+const
+  GUIDFormatNLength = 32;
+  GUIDFormatDLength = 36;
+  GUIDWithBracketsLength = 38;
 
 {$REGION 'TGUIDConverter'}
 
 class function TGUIDConverter.AddBraces(const S: string): string;
 begin
-  Assert(S.Length = 36);
+  Assert(S.Length = GUIDFormatDLength);
   Result := '{' + S + '}';
 end;
 
 class function TGUIDConverter.AddParentheses(const S: string): string;
 begin
-  Assert(S.Length = 36);
+  Assert(S.Length = GUIDFormatDLength);
   Result := '(' + S + ')';
 end;
 
 class function TGUIDConverter.DigitsToCanonicalForm(const S: string): string;
 begin
-  Assert(S.Length = 32);
+  Assert(S.Length = GUIDFormatNLength);
   Result := S.Insert(20, '-');
   Result := Result.Insert(16, '-');
   Result := Result.Insert(12, '-');
@@ -93,15 +96,15 @@ var
 begin
   try
     case S.Length of
-      32:
+      GUIDFormatNLength:
         begin
           CanonicalForm := DigitsToCanonicalForm(S);
           Result := TGUID.Create(AddBraces(CanonicalForm));
         end;
 
-      36: Result := TGUID.Create(AddBraces(S));
+      GUIDFormatDLength: Result := TGUID.Create(AddBraces(S));
 
-      38:
+      GUIDWithBracketsLength:
         if (S.Chars[0] = '{') and (S.Chars[37] = '}') then
           Result := TGUID.Create(S)
         else if (S.Chars[0] = '(') and (S.Chars[37] = ')') then
@@ -112,14 +115,14 @@ begin
       Abort;
     end;
   except
-    raise EArgumentException.CreateFmt(MsgInvalidGUID, [S]);
+    raise EArgumentException.CreateFmt(SInvalidGUID, [S]);
   end;
 end;
 
 class function TGUIDConverter.RemoveBrackets(const S: string): string;
 begin
-  Assert(S.Length = 38);
-  Result := S.Substring(1, 36);
+  Assert(S.Length = GUIDWithBracketsLength);
+  Result := S.Substring(1, GUIDFormatDLength);
 end;
 
 class function TGUIDConverter.ToString(const Value: TGUID; const AFormat: TGUIDFormat): string;
@@ -163,9 +166,9 @@ class function TGUIDValidator.IsValidGUID(const S: string): Boolean;
 begin
   Result := False;
   case S.Length of
-    32: Result := TRegEx.IsMatch(S, RegExGUIDFormatN);
-    36: Result := TRegEx.IsMatch(S, RegExGUIDFormatD);
-    38:
+    GUIDFormatNLength: Result := TRegEx.IsMatch(S, RegExGUIDFormatN);
+    GUIDFormatDLength: Result := TRegEx.IsMatch(S, RegExGUIDFormatD);
+    GUIDWithBracketsLength:
       case S.Chars[0] of
         '{': Result := TRegEx.IsMatch(S, RegExGUIDFormatB);
         '(': Result := TRegEx.IsMatch(S, RegExGUIDFormatP);

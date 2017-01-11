@@ -4,9 +4,6 @@ unit Sprinkles.IO;
 
 interface
 
-uses
-  System.SysUtils;
-
 type
   TFileSystemFamily = (Unix, Windows);
 
@@ -30,6 +27,7 @@ procedure CheckDirectoryExists(const APath: string; AFollowLink: Boolean = True)
 implementation
 
 uses
+  System.SysUtils,
   System.IOUtils;
 
 resourcestring
