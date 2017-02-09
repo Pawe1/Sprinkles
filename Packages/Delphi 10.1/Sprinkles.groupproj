@@ -6,6 +6,9 @@
         <Projects Include="Sprinkles.Base.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Sprinkles.Android.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="Sprinkles_Base:Make">
         <MSBuild Projects="Sprinkles.Base.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Sprinkles_Android">
+        <MSBuild Projects="Sprinkles.Android.dproj"/>
+    </Target>
+    <Target Name="Sprinkles_Android:Clean">
+        <MSBuild Projects="Sprinkles.Android.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sprinkles_Android:Make">
+        <MSBuild Projects="Sprinkles.Android.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Sprinkles_Base"/>
+        <CallTarget Targets="Sprinkles_Base;Sprinkles_Android"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Sprinkles_Base:Clean"/>
+        <CallTarget Targets="Sprinkles_Base:Clean;Sprinkles_Android:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Sprinkles_Base:Make"/>
+        <CallTarget Targets="Sprinkles_Base:Make;Sprinkles_Android:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
