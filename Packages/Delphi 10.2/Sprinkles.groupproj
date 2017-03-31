@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3ADFA747-175E-4C8F-ACD9-E4C9B30A1AC5}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Sprinkles.Base.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Sprinkles_Base">
+        <MSBuild Projects="Sprinkles.Base.dproj"/>
+    </Target>
+    <Target Name="Sprinkles_Base:Clean">
+        <MSBuild Projects="Sprinkles.Base.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sprinkles_Base:Make">
+        <MSBuild Projects="Sprinkles.Base.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Sprinkles_Base"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Sprinkles_Base:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Sprinkles_Base:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
