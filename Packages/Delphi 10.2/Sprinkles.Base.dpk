@@ -35,6 +35,7 @@ contains
   Sprinkles in '..\..\Source\Base\Sprinkles.pas',
   Sprinkles.IO in '..\..\Source\Base\Sprinkles.IO.pas',
   Sprinkles.Time in '..\..\Source\Base\Sprinkles.Time.pas',
-  Sprinkles.Lifetime in '..\..\Source\Base\Sprinkles.Lifetime.pas';
+  Sprinkles.Lifetime in '..\..\Source\Base\Sprinkles.Lifetime.pas',
+  Sprinkles.Collections in '..\..\Source\Base\Sprinkles.Collections.pas';
 
 end.
