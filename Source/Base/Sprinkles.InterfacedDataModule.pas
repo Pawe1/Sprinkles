@@ -8,7 +8,11 @@ uses
   System.Classes;
 
 type
-  TInterfacedDataModule = class(TDataModule)
+
+  // Same as TDataModule but with enabled reference counted interfaces
+  // based on System.TInterfacedObject & article of Jeroen Wiert Pluimers
+  // http://wiert.me/2009/08/10/delphi-using-fastmm4-part-2-tdatamodule-descendants-exposing-interfaces-or-the-introduction-of-a-tinterfaceddatamodule/
+  TInterfacedDataModule = class(TDataModule, IInterface)
 {$IFNDEF AUTOREFCOUNT}
   private
     FOwnerIsComponent: Boolean;
@@ -21,7 +25,6 @@ type
     [Volatile] FRefCount: Integer;
     class procedure __MarkDestroying(const Obj); static; inline;
 {$ENDIF}
-    function QueryInterface(const IID: TGUID; out Obj): HResult; override; stdcall;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
   public
@@ -57,10 +60,8 @@ procedure TInterfacedDataModule.AfterConstruction;
 begin
   inherited;
   FOwnerIsComponent := Assigned(Owner) and (Owner is TComponent);
-{$IFNDEF AUTOREFCOUNT}
 // Release the constructor's implicit refcount
   AtomicDecrement(FRefCount);
-{$ENDIF}
 end;
 
 procedure TInterfacedDataModule.BeforeDestruction;
@@ -82,14 +83,6 @@ begin
   TInterfacedDataModule(Result).FRefCount := 1;
 end;
 {$ENDIF AUTOREFCOUNT}
-
-function TInterfacedDataModule.QueryInterface(const IID: TGUID; out Obj): HResult;
-begin
-  if GetInterface(IID, Obj) then
-    Result := 0
-  else
-    Result := E_NOINTERFACE;
-end;
 
 function TInterfacedDataModule._AddRef: Integer;
 begin
