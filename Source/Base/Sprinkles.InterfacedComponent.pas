@@ -6,7 +6,11 @@ uses
   System.Classes;
 
 type
-  TInterfacedComponent = class(TComponent)
+
+  // Same as TComponent but with enabled reference counted interfaces
+  // based on System.TInterfacedObject & article of Jeroen Wiert Pluimers
+  // http://wiert.me/2009/08/10/delphi-using-fastmm4-part-2-tdatamodule-descendants-exposing-interfaces-or-the-introduction-of-a-tinterfaceddatamodule/
+  TInterfacedComponent = class(TComponent, IInterface, IInterfaceComponentReference)
 {$IFNDEF AUTOREFCOUNT}
   private
     FOwnerIsComponent: Boolean;
@@ -19,12 +23,11 @@ type
     [Volatile] FRefCount: Integer;
     class procedure __MarkDestroying(const Obj); static; inline;
 {$ENDIF}
-    function QueryInterface(const IID: TGUID; out Obj): HResult; override; stdcall;
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
   public
-    procedure AfterConstruction; override;
 {$IFNDEF AUTOREFCOUNT}
+    procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
     class function NewInstance: TObject; override;
     property RefCount: Integer read GetRefCount;
@@ -55,10 +58,8 @@ procedure TInterfacedComponent.AfterConstruction;
 begin
   inherited;
   FOwnerIsComponent := Assigned(Owner) and (Owner is TComponent);
-{$IFNDEF AUTOREFCOUNT}
 // Release the constructor's implicit refcount
   AtomicDecrement(FRefCount);
-{$ENDIF}
 end;
 
 procedure TInterfacedComponent.BeforeDestruction;
@@ -80,14 +81,6 @@ begin
   TInterfacedComponent(Result).FRefCount := 1;
 end;
 {$ENDIF AUTOREFCOUNT}
-
-function TInterfacedComponent.QueryInterface(const IID: TGUID; out Obj): HResult;
-begin
-  if GetInterface(IID, Obj) then
-    Result := 0
-  else
-    Result := E_NOINTERFACE;
-end;
 
 function TInterfacedComponent._AddRef: Integer;
 begin
