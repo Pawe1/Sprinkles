@@ -8,43 +8,50 @@ uses
   System.Classes;
 
 type
-  TFreeNotifyEvent = procedure(ASender: TObject; AComponent: TComponent) of object;   { TODO -opc -cdev : const ? }
+  TDestructionNotifyEvent = procedure(ASender: TObject; AComponent: TComponent) of object;   { TODO -opc -cdev : const ? }
 
   // Based on System.Contnrs.TComponentListNexus (and similar to dxCoreClasses.TcxFreeNotificator)
-  // This class is dedicated to receive/implement free notifications in classes that are not TComponent descendants
-  TFreeNotifier = class(TComponent)
+  // This class is dedicated to receive/implement component destroy notifications inside types that are not TComponent descendants
+  TDestructionDetector = class(TComponent)
   private
-    FOnFreeNotify: TFreeNotifyEvent;
+    FOnDestructingDetected: TDestructionNotifyEvent;
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
+    property OnDestructingDetected: TDestructionNotifyEvent read FOnDestructingDetected write FOnDestructingDetected;
+  end;
+
+  TDestructionDetectorHelper = class helper for TDestructionDetector
     procedure StartObserving(const AComponent: TComponent);
     procedure StopObserving(const AComponent: TComponent);
-    property OnFreeNotify: TFreeNotifyEvent read FOnFreeNotify write FOnFreeNotify;
   end;
 
 implementation
 
-{$REGION 'TFreeNotifier'}
+{$REGION 'TDestructionDetector'}
 
-procedure TFreeNotifier.StartObserving(const AComponent: TComponent);
+procedure TDestructionDetector.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  // in DevExpress implementation "inherited" is called here
+  if (Operation = TOperation.opRemove) and Assigned(FOnDestructingDetected) then
+    FOnDestructingDetected(Self, AComponent);
+  inherited;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TDestructionDetectorHelper'}
+
+procedure TDestructionDetectorHelper.StartObserving(const AComponent: TComponent);
 begin
   if Assigned(AComponent) then
     AComponent.FreeNotification(Self);
 end;
 
-procedure TFreeNotifier.StopObserving(const AComponent: TComponent);
+procedure TDestructionDetectorHelper.StopObserving(const AComponent: TComponent);
 begin
   if Assigned(AComponent) then
     AComponent.RemoveFreeNotification(Self);
-end;
-
-procedure TFreeNotifier.Notification(AComponent: TComponent; Operation: TOperation);
-begin
-  // in DevExpress implementation "inherited" is called here
-  if (Operation = TOperation.opRemove) and Assigned(FOnFreeNotify) then
-    FOnFreeNotify(Self, AComponent);
-  inherited;
 end;
 
 {$ENDREGION}
