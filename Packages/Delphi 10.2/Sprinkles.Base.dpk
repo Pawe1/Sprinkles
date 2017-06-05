@@ -36,6 +36,7 @@ contains
   Sprinkles.IO in '..\..\Source\Base\Sprinkles.IO.pas',
   Sprinkles.Time in '..\..\Source\Base\Sprinkles.Time.pas',
   Sprinkles.Lifetime in '..\..\Source\Base\Sprinkles.Lifetime.pas',
-  Sprinkles.InterfacedDataModule in '..\..\Source\Base\Sprinkles.InterfacedDataModule.pas';
+  Sprinkles.InterfacedDataModule in '..\..\Source\Base\Sprinkles.InterfacedDataModule.pas',
+  Sprinkles.InterfacedComponent in '..\..\Source\Base\Sprinkles.InterfacedComponent.pas';
 
 end.
