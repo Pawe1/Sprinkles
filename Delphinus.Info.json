@@ -1,0 +1,13 @@
+{
+  "id": "{6B2EE454-C8E3-46FA-B6E8-61F5A4FB8328}",
+  "name": "Sprinkles",
+  "picture": "Resources\\Logo.jpg",
+  "license_type": "Apache 2.0",
+  "license_file": "License",
+  "platforms": "Win32;Win64",
+  "package_compiler_min": 32,
+  "package_compiler_max": 32,
+  "compiler_min": 32,
+  "compiler_max": 32,
+  "first_version": "0.0.1"
+}

@@ -1,0 +1,26 @@
+{
+  "browsing_pathes": [{
+    "pathes": "Source\\Base",
+    "platforms": "Win32;Win64"
+  }],
+  "source_folders": [{
+    "folder": ".",
+    "filter": "License"
+  },
+  {
+    "folder": "Source",
+    "recursive": true
+  },
+  {
+    "folder": "Packages",
+    "recursive": true
+  },
+  {
+    "folder": "Tests",
+    "recursive": true
+  }],
+  "projects": [{
+    "project": "Packages\\Delphi 10.2\\Sprinkles.Base.dproj",
+    "compiler": 32
+  }]
+}
