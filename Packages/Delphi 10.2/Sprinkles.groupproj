@@ -6,6 +6,9 @@
         <Projects Include="Sprinkles.Base.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Sprinkles.VCL.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="Sprinkles_Base:Make">
         <MSBuild Projects="Sprinkles.Base.dproj" Targets="Make"/>
     </Target>
+    <Target Name="Sprinkles_VCL">
+        <MSBuild Projects="Sprinkles.VCL.dproj"/>
+    </Target>
+    <Target Name="Sprinkles_VCL:Clean">
+        <MSBuild Projects="Sprinkles.VCL.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sprinkles_VCL:Make">
+        <MSBuild Projects="Sprinkles.VCL.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Sprinkles_Base"/>
+        <CallTarget Targets="Sprinkles_Base;Sprinkles_VCL"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Sprinkles_Base:Clean"/>
+        <CallTarget Targets="Sprinkles_Base:Clean;Sprinkles_VCL:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Sprinkles_Base:Make"/>
+        <CallTarget Targets="Sprinkles_Base:Make;Sprinkles_VCL:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
