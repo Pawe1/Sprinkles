@@ -7,6 +7,8 @@ uses
   Vcl.Graphics;
 
 type
+
+  // based on code posted on Stack Overflow by Ryan J. Mills
   TModalBackdrop = class
   private
     const
