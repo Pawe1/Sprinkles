@@ -49,6 +49,7 @@
         <Icns_MainIcns>$(BDS)\bin\delphi_PROJECTICNS.icns</Icns_MainIcns>
         <DCC_UnitSearchPath>$(DUnitX);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <SanitizedProjectName>Sprinkles_Tests_Delphi_10_2</SanitizedProjectName>
+        <DCC_Define>TESTINSIGHT;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>NexusDB412lg250;vcl;vclactnband;IndySystem;SysToolsDBDR;NexusDB412ll250;tethering;svnui;NexusDB412sd250;NexusDB412sq250;NexusDB412db250;vclimg;SysToolsDR;vcltouch;vcldb;bindcompfmx;svn;Spring.Data;RaizeComponentsVcl;AsyncProDR;RaizeComponentsVclDb;fmx;fmxdae;NexusDB412pv250;xmlrtl;fmxobj;vclwinx;rtl;CustomIPTransport;vcldsnap;IndyCore;DOSCommandDR;vclx;bindcomp;appanalytics;dsnap;IcsVclD102Run;bindcompvcl;vclribbon;NexusDB412sr250;VclSmp;IcsFmxD102Run;vclie;NexusDB412se250;bindengine;dbrtl;IndyProtocols;IcsCommonD102Run;OnGuardFMXDR;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
